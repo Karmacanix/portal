@@ -1,0 +1,41 @@
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_javascript %}
+
+
+<header class="p-3 text-bg-dark">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{% url 'home' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="{% static 'home/k4.png' %}" alt="Karma Icon" width="32" height="32">
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">Home</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
+                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+            </ul>
+
+            {% if user.is_authenticated %}
+                <div class="dropdown text-end">
+                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'home/k4.png' %}" alt="dak" width="32" height="32" class="rounded-circle">
+                    </a>
+                    <ul class="dropdown-menu text-small">
+                        <li><a class="dropdown-item" href="{% url 'account_settings' %}">Settings</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+                    </ul>
+                </div>
+            {% else %}
+                <div class="text-end">
+                    <a type="button" class="btn btn-primary btn-outline-light me-2" href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'signup' %}" type="button" class="btn btn-warning">Sign-up</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</header>
