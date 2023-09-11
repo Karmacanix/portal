@@ -5,21 +5,48 @@
 {# Load CSS and JavaScript #}
 {% bootstrap_javascript %}
 
+{% block head %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Leckerli+One">
 
-<header class="p-3 text-bg-dark">
-    <div class="container">
+    <style>
+        .animation--fade-titles {
+            color: DodgerBlue;
+            animation-duration: 24s;
+            animation-name: fade-title;
+            animation-delay: 0;
+            animation-iteration-count: infinite;
+            animation-direction: forward;
+        }
+
+        @keyframes fade-title {
+            0%  {color: DodgerBlue;}
+            50% {color: DeepPink;}
+            100% {color: DodgerBlue;}
+        }
+    </style>
+{% endblock %}
+<header class="container p-3 text">
+  
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="{% url 'home' %}">
+                <h3 class="animation--fade-titles" style='font-family: "Leckerli One", serif; color:#0055aa;'>Kanvasing</h3>
+            </a>
+        </div>
+
+    <br/>
+
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="{% url 'home' %}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="{% static 'home/k4.png' %}" alt="Karma Icon" width="32" height="32">
             </a>
-
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{% url 'home' %}" class="nav-link px-2 text-white">Home</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-                <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+                <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'home' %}" class="nav-link px-2 text-white">Home</a></button></li>
+                {% if user.is_authenticated %}
+                    <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'goal_list' %}" class="nav-link px-2 text-white"></i> Goals </a></button></li>
+                    <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'campaign_list' %}" class="nav-link px-2 text-white"> Campaigns </a></button></li>
+                    <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="#" class="nav-link px-2 text-white"> Expenses </a></button></li>
+                {% endif %}
             </ul>
-
             {% if user.is_authenticated %}
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,5 +64,5 @@
                 </div>
             {% endif %}
         </div>
-    </div>
+
 </header>

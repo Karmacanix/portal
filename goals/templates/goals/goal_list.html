@@ -1,0 +1,64 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<style>
+  body {
+    height: 100%;
+  }
+
+  .form-signin {
+    max-width: 420px;
+    padding: 1rem;
+  }
+
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+</style>
+</body>
+  <div class="container my-5">
+    <h2>Goals</h2>
+    {% bootstrap_messages %}
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Goal</th>
+        <th scope="col">Measure</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Target</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for goal in my_favorite_goals %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td><a href="{% url 'goal_details' goal.id %}">{{ goal.specific }}</a></td>
+          <td>{{ goal.success_measure }}</td>
+          <td>{{ goal.business_owner }}</td>
+          <td>{{ goal.target_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div> 
+</body>
+{% endblock %}
