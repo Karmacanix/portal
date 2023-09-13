@@ -42,19 +42,16 @@
     <main class="form-signin w-100 m-auto border rounded-2">
       <form method="post" action="">
         {% csrf_token %}
-        <h2 class="h3 mb-3 fw-normal">Campaign Details</h2>
+        <h2 class="h3 mb-3 fw-normal">Expense Details</h2>
         {% bootstrap_form form %}
         {% buttons %}
-          <button type="submit" class="btn btn-primary">
-            Save
-          </button>
-        {% endbuttons %}
-        <input type="hidden" name="next" value="{{ campaign.get_absolute_url }}">
+        <button type="submit" class="btn btn-primary">
+          Save
+        </button>
+      {% endbuttons %}
+        <input type="hidden" name="next" value="{{ expense.get_absolute_url }}">
       </form>
     </main>
-    {{ target_campaign }}
-    <br/>
-    {{ target_list }}
   </div>
 </body>
 {% endblock %}

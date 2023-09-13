@@ -35,45 +35,30 @@
 </style>
 </body>
   <div class="container my-5">
-    <h2>Campaigns</h2>
+    <h2>Expenses</h2>
     {% bootstrap_messages %}
     <table class="table table-striped">
       <thead>
       <tr>
         <th scope="col">#</th>
-        <th scope="col">Campaign</th>
-        <th scope="col">Parent</th>
-        <th scope="col">Sponsor</th>
+        <th scope="col">Name</th>
         <th scope="col">Start Date</th>
         <th scope="col">End Date</th>
+        <th scope="col">Owner</th>
       </tr>
       </thead>
       <tbody>
-        {% for campaign in campaign_list %}
+        {% for expense in my_favorite_expenses %}
         <tr>
           <th scope="row">{{ forloop.counter }}</th>
-          <td><a href="{% url 'campaign_details' campaign.id %}">{{ campaign.name }}</a></td>
-          <td>{{ campaign.parent }}</td>
-          <td>{{ campaign.sponsor }}</td>
-          <td>{{ campaign.start_date }}</td>
-          <td>{{ campaign.end_date }}</td>
+          <td><a href="{% url 'expense_details' expense.id %}">{{ expense.name }}</a></td>
+          <td>{{ expense.start_date }}</td>
+          <td>{{ expense.end_date }}</td>
+          <td>{{ expense.owner }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
   </div> 
-  {% regroup campaign by parent as parent_list %}
-
-<ul>
-{% for parent in parent_list %}
-    <li>{{ parent.grouper }}
-    <ul>
-        {% for campaign in parent.list %}
-          <li>{{ campaign.id }}: {{ campaign.name }}</li>
-        {% endfor %}
-    </ul>
-    </li>
-{% endfor %}
-</ul>
 </body>
 {% endblock %}

@@ -44,7 +44,7 @@
                 {% if user.is_authenticated %}
                     <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'goal_list' %}" class="nav-link px-2 text-white"></i> Goals </a></button></li>
                     <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'campaign_list' %}" class="nav-link px-2 text-white"> Campaigns </a></button></li>
-                    <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="#" class="nav-link px-2 text-white"> Expenses </a></button></li>
+                    <li><button class="w3-btn w3-padding-small w3-round-large w3-hover-purple"><a href="{% url 'expense_list' %}" class="nav-link px-2 text-white"> Expenses </a></button></li>
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}

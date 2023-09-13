@@ -1,0 +1,87 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+<style>
+  html,
+  body {
+    height: 100%;
+  }
+
+  .form-signin {
+    max-width: 420px;
+    padding: 1rem;
+  }
+
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+</style>
+
+<body>
+  <div class="container my-5">
+    <h2>Campaign Details</h2>
+    <div class="d-grid gap-2 d-md-flex">
+      <div class="p-2 bd-highlight btn btn-outline-primary btn-sm">Edit</div>
+      <div class="p-2 bd-highlight btn btn-outline-warning btn-sm">+Target segments</div>
+      <div class="p-2 bd-highlight btn btn-outline-warning btn-sm">+Child campaigns</div>
+      <div class="p-2 bd-highlight btn btn-outline-warning btn-sm">+Budget</div>
+      <div class="p-2 bd-highlight btn btn-outline-warning btn-sm">+Metrics</div>
+    </div>
+  </div>
+  {% bootstrap_messages %}
+  <div class="container">
+    <div class="row">
+      <div class="col-6"> 
+        <h3>Details</h3>
+        <table class="table table-bordered border-primary">
+        {% if current_campaign %}      
+          <tr><th>Name:</th><td>{{ current_campaign.name }}</td></tr>
+          <tr><th>Parent:</th><td>{{ current_campaign.parent }}</td></tr>
+          <tr><th>Sponsor:</th><td>{{ current_campaign.sponsor }}</td></tr>
+          <tr><th>Start Date:</th><td>{{ current_campaign.start_date |date:"jS M Y" }}</td></tr>
+          <tr><th>End Date:</th><td>{{ current_campaign.end_date |date:"jS M Y" }}</td></tr>
+        {% endif %} 
+        </table>
+      </div>
+      <div class="col-6">
+        <h3>Target segments</h3>
+        <table class="table table-bordered border-warning">
+          <tr>
+            <th>Generation</th>
+            <th>Need</th>
+            <th>Income Bracket</th>
+            <th>Professional Group</th>
+          </tr>        
+          {% for t in target %}      
+            <tr>
+              <td hidden=True>{{ t.campaign }}</td>
+              <td>{{ t.get_generation_display }}</td>
+              <td>{{ t.need }}</td>
+              <td>{{ t.get_income_bracket_display }}</td>
+              <td>{{ t.get_professional_group_display }}</td>
+            </tr>
+          {% endfor %}
+        <table>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
