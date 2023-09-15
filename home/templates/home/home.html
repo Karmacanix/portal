@@ -24,25 +24,19 @@
 
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
-      <img src="{% static 'home/k4.png' %}" alt="Karma Icon" width="100" height="100">
-      {% if user.is_authenticated %}
-        <h4>Welcome back {{ user.username }}!</h4>
-        <br/>
-      {% else %}  
-        <h4>Welcome!</h4>
-        <br/>
-        <p>If you are new here sign-up!</p>
-        <p>If you're visiting us again, welcome back!</p>
-        <br/>
-        <a href="{% url 'login' %}" class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
-          Login
-          <svg class="bi ms-2" width="24" height="24"><use xlink:href="#arrow-right-short"></use></svg>
-        </a>
-        <a href="{% url 'signup' %}" class="btn btn-lg px-4 rounded-pill btn-warning" type="button">
-          Sign-up
-          <svg class="bi ms-2" width="24" height="24"><use xlink:href="#check2-circle"></use></svg>
-        </a>
-      {% endif %}
+    <img src="{% static 'home/k4.png' %}" alt="Karma Icon" width="100" height="100">
+    {% if user.is_authenticated %}
+      <h1 class="w3-jumbo">Welcome back {{ user.username }}!</h1>
+      <br/>
+    {% else %}  
+      <h1 class="w3-jumbo">Welcome!</h1>
+      <br/>
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><button class="w3-btn w3-blue w3-large w3-padding-small w3-round-large w3-hover-pink"><a href="{% url 'login' %}" class="nav-link px-2 text-white">Login</a></button></li>
+        <li>&nbsp; &nbsp;</li>
+        <li><button class="w3-btn w3-black w3-large w3-padding-small w3-round-large w3-hover-red"><a href="{% url 'signup' %}" class="nav-link px-2 text-white">Sign-up</a></button></li>
+      </ul>
+    {% endif %}
   </div>
 </div>
 

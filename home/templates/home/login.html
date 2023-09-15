@@ -44,21 +44,17 @@
       {% endif %}
   {% endif %}
   <div class="container my-5">
-    <main class="form-signin w-100 m-auto">
+    <main class="form-signin w-100 m-auto border">
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
-        <img class="mb-4" src="{% static 'home/k4.png' %}" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <h2 class="h3 mb-3 fw-normal">Please sign in</h2>
         {% bootstrap_form form %}
         {% buttons %}
           <button type="submit" class="btn btn-primary">
             Submit
           </button>
         {% endbuttons %}
-
           <input type="hidden" name="next" value="{{ next }}">
-
-        <p class="mt-5 mb-3 text-body-secondary"><a href="{% url 'home' %}" class="text-primary">Karmacanix<sup>©</sup></a> 2017–2023</p>
       </form>
       {# Assumes you set up the password_reset view in your URLconf #}
       <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
