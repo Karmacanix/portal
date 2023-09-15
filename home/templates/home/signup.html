@@ -53,6 +53,7 @@
   {% endif %}
 
   <div class="container my-5">
+    {% bootstrap_messages %}
     <main class="form-signin w-100 m-auto border">
       <form method="post" action="{% url 'signup' %}">
         {% csrf_token %}
