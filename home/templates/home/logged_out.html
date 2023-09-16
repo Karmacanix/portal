@@ -1,23 +1,19 @@
 {% extends "home/base.html" %}
 
 {% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
 
 {% block content %}
 <body>
     <div class="container my-5">
         <div class="p-5 text-center bg-body-tertiary rounded-3">
-            <h2 class="text-success">Success!</h2>
-            <p>You have successfully logged out.</p>
-            <p>Log back in or return to the home page.</p>
-            <br/>
-            <button class="w3-btn w3-blue w3-padding-small w3-large w3-round-large w3-hover-pink">
-                <a href="{% url 'login' %}" class="nav-link px-2 text-white">Login</a>
-            </button>
-            &nbsp; &nbsp;
-            <button class="w3-btn w3-deep-purple w3-padding-small w3-large w3-round-large w3-hover-pink">
-                <a href="{% url 'home' %}" class="nav-link px-2 text-white">Home</a>
-            </button>
-            <br/>
+            <h2 class="w3-jumbo text-success">Success!</h2>
+            {% if messages %}
+                {% bootstrap_messages %}
+            {% endif %}
+            <p>You are logged out.</p>
         </div>
     </div>
 </body>

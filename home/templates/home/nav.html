@@ -1,9 +1,5 @@
 {% load static %}
-{# Load the tag library #}
-{% load bootstrap5 %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_javascript %}
 
 {% block head %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Leckerli+One">
@@ -37,7 +33,7 @@
     </div>
     <br/>
     <div class="row">
-        <div id="karmactive" class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start border-bottom border-primary p-1">
+        <div id="karmactive" class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start p-1">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><button class="w3-btn w3-deep-purple w3-padding-small w3-round-large w3-hover-pink active"><a href="{% url 'home' %}" class="nav-link px-2 text-white active" aria-current="page">Home</a></button></li>
                 <li>&nbsp; &nbsp;</li>

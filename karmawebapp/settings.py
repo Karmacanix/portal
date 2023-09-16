@@ -40,10 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'dotenv',
     'bootstrap5',
-    'campaigns',
-    'expenses',
     'home',
-    'goals',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

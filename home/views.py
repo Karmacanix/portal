@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -14,48 +15,56 @@ from .forms import  NewUserForm
 
 UserModel = get_user_model()
 
+def get_complete_name(request):
+    if request.user.get_short_name():
+        un = request.user.get_short_name()
+        print(un)
+        if request.user.get_full_name():
+            un = request.user.get_full_name()
+            print(un)
+    
+    else:
+        un = request.user.username
+        print(un)
+            
+    return un
 
 # Create your views here.
 def home(request):
+    un = ''
+    if request.user.is_authenticated:
+        un = get_complete_name(request)
+        
     sitename = 'karma-base'
-    context = {'sitename': sitename}
-    return render( request, 'home/home.html', context)
+    return render( request, 'home/home.html', {"sitename": sitename, "un" : un })
 
 
 
 @login_required
 def account_settings(request):
-    name = UserModel.get_full_name(request.user)
-    context = {'name': name}
-    return render( request, 'home/account.html', context)
+    return render( request, 'home/account.html', {'name': get_complete_name(request)})
     
     
 def signup(request):
-    # if this is a POST request we need to process the form data
     if request.method == "POST":
-        # create a form instance and populate it with data from the request:
         form = NewUserForm(request.POST)
-        # check the username is unique
-        
-        #check the passwords match
-        
-        # check whether it's valid:
         if form.is_valid():
-            # save user
-            if form.fields["email"]:
-                em = form.cleaned_data.get("email")
-                if form.clean_username(form.fields["username"]):
-                    un = form.cleaned_data.get("username")
-                    if form.clean_password2(form.fields["password1"], form.fields["password2"]):
-                        pw = form.cleaned_data.get("password1")
-                        user = User.objects.create_user(un, em, pw)
+            user = User.objects.create_user(
+                username = form.cleaned_data.get("username"), 
+                email = form.cleaned_data.get("email"), 
+                password = form.cleaned_data.get("password1")
+            )
+            user.save()
+            messages.success(request, "New user created.")
+            
+        else:
+            messages.error(request, "Invalid form.")
         
-        return HttpResponseRedirect('home')
+        return HttpResponseRedirect(' ')
 
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = NewUserForm()
 
-    return render(request, "home/signup.html", {"form": form})  
+    return render(request, "home/signup.html", {"form": form})
 
     

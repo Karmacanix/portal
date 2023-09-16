@@ -7,34 +7,6 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% block content %}
-<style>
-  html,
-  body {
-    height: 100%;
-  }
-
-  .form-signin {
-    max-width: 420px;
-    padding: 1rem;
-  }
-
-  .form-signin .form-floating:focus-within {
-    z-index: 2;
-  }
-
-  .form-signin input[type="email"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  .form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-</style>
-
 <body>
   {% if next %}
       {% if user.is_authenticated %}
@@ -43,11 +15,15 @@
           <p>Please login to see this page.</p>
       {% endif %}
   {% endif %}
+
   <div class="container my-5">
-    <main class="form-signin w-100 m-auto border">
+    <main class="form-signin w-100 m-auto bg-body-tertiary rounded-3 border">
       <form method="post" action="{% url 'login' %}">
         {% csrf_token %}
         <h2 class="h3 mb-3 fw-normal">Please sign in</h2>
+        {% if messages %}
+          {% bootstrap_messages %}
+        {% endif %}
         {% bootstrap_form form %}
         {% buttons %}
           <button type="submit" class="btn btn-primary">
