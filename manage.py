@@ -3,10 +3,18 @@
 import os
 import sys
 
+from dotenv import load_dotenv
+
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'karmawebapp.settings')
+    if 'WEBSITE_HOSTNAME' not in os.environ:
+        print("Loading environment variables for .env file")
+        load_dotenv('./.env')
+
+    settings_module = 'karmawebapp.production' if 'WEBSITE_HOSTNAME' in os.environ else 'karmawebapp.settings'
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
+    
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
