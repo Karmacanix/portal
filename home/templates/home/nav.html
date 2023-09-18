@@ -38,11 +38,13 @@
                 <li><button class="w3-btn w3-deep-purple w3-padding-small w3-round-large w3-hover-pink active"><a href="{% url 'home' %}" class="nav-link px-2 text-white active" aria-current="page">Home</a></button></li>
                 <li>&nbsp; &nbsp;</li>
                 {% if user.is_authenticated %}
-                    <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="#" class="nav-link px-2 text-white">Documents</a></button></li>
+                    <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="{% url 'show_catalog' %}" class="nav-link px-2 text-white">Maintain Catalogue</a></button></li>
                     <li>&nbsp; &nbsp;</li>
-                    <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="#" class="nav-link px-2 text-white">Themes</a></button></li>
+                    <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="{% url 'show_sidebar' %}" class="nav-link px-2 text-white">Sidebar</a></button></li>
                     <li>&nbsp; &nbsp;</li>
-                    <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="#" class="nav-link px-2 text-white">About</a></button></li>
+                    {% if user.is_superuser %}
+                        <li><button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green"><a href="{% url 'admin:index' %}" class="nav-link px-2 text-white">Django Admin</a></button></li>
+                    {% endif %}
                 {% endif %}
             </ul>
             {% if user.is_authenticated %}

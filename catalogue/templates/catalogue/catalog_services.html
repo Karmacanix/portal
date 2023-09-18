@@ -1,0 +1,104 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock %}
+{% block content %}
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+  }
+  
+  /* Remove extra left and right margins, due to padding in columns */
+  .row {margin: 0 -5px;}
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Style the counter cards */
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+  }
+  
+  /* Responsive columns - one column layout (vertical) on small screens */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+
+</body>
+  <div class="container bg-body-tertiary rounded-3 my-3 p-1" data-bs-theme="dark">    
+    <div class="row justify-content-md-center">
+    <div class="col-md-auto">
+    <div class="flex-shrink-0 p-3 bg-dark border rounded-3 my-2" style="width: 280px;">
+      <h3>
+        <a href="/catalog/services/" class="d-flex align-items-center pb-3 mb-3 link-purple text-decoration-none border-bottom text-white">
+          <i class="fa-solid fa-bars-staggered"></i>&nbsp;
+          <span class="fs-5 fw-semibold">Catalogue</span>
+        </a>
+      </h3>
+      <ul class="my-3">
+        {% recursetree catalog_list %}
+        <li class="my-2">
+          <a href="{% url 'show_services' node.id %}"> {{ node.name }}</a>
+          {% if not node.is_leaf_node %}
+            <ul class="children">
+              {{ children }}
+            </ul>
+          {% endif %}
+        </li>
+        {% endrecursetree %}
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-auto">
+    <div class="flex-shrink-0 p-3 border rounded-3 my-2" style="width: 560px;">
+      <div class="row">
+        <h3>Services available for {{ services_for_catalog_item }}</h3>
+      </div>
+      <div class="row">
+        {% for service in services %}
+          {% if forloop.counter0|divisibleby:"3" %}
+            <div class="w-100"></div>
+          {% endif %}
+          <div class="col-3">
+            <div class="card">
+              <p>{{ service.name }}</p>
+              <p>{{ service.cost }}</p>
+              <button class="w3-btn w3-small w3-deep-purple w3-padding-small w3-round-large w3-hover-pink">
+                <a href="#">+Cart</a>
+              </button>
+            </div>
+          </div>
+        {% endfor %}
+      </div> 
+    </div>
+  </div>
+</div>
+  </div>
+  <script src="{% static 'js/sidebar.js' %}"></script>
+</body>
+{% endblock %}
