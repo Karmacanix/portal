@@ -32,7 +32,6 @@ class CatalogUpdateView(UpdateView):
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         services = Service.objects.filter(category_id = self.object.id)
         context = super().get_context_data(**kwargs)
-        print(services)
         context["service_list"] = services
         return context
 
@@ -43,9 +42,18 @@ class SidebarListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        rns = Catalog.objects.root_nodes()
-        print(rns)
-        context["top_level_nodes"] = rns
+        catalog_w_services = Service.objects.all().values_list('category', flat=True).distinct()
+        cs = list(catalog_w_services)
+        for item in cs:
+            c = Catalog.objects.get(id=item)
+            if c.parent is not None:
+                if c.parent.id not in cs:
+                    cs.append(c.parent.id)
+        
+        catalog_with_services = Catalog.objects.filter(id__in=cs)
+        context["catalog_items_with_services"] = catalog_with_services
+        #rns = Catalog.objects.root_nodes()
+        #context["top_level_nodes"] = rns
         return context
 
 
@@ -76,8 +84,17 @@ class ServiceListView(ListView):
         cat_obj = Catalog.objects.get(id=self.kwargs.get("catalog_id"))
         services = Service.objects.filter(category=cat_obj)
         cat_tree = Catalog.objects.all()
+        catalog_w_services = Service.objects.all().values_list('category', flat=True).distinct()
+        cs = list(catalog_w_services)
+        for item in cs:
+            c = Catalog.objects.get(id=item)
+            if c.parent is not None:
+                if c.parent.id not in cs:
+                    cs.append(c.parent.id)
+        
+        catalog_with_services = Catalog.objects.filter(id__in=cs)
+        context["catalog_items_with_services"] = catalog_with_services
         context["services"] = services
         context["services_for_catalog_item"] = cat_obj
         context["catalog_list"] = cat_tree
-        print("all catalogue items:", cat_tree, "catalog item:", cat_obj, "services for catalog item:", services)
         return context   

@@ -1,0 +1,32 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<body>
+    <div class="container my-3">
+        <main class="form-signin w-100 m-auto border rounded-2">
+        <form method="post" action="">
+            {% csrf_token %}
+            <h2 class="h3 mb-3 fw-normal">Add to cart</h2>
+            {% if bootstrap_messages %}
+                {% bootstrap_messages %}
+            {% endif %}
+            <p>{{ shoppingcart.item.name }} at {{ shoppingcart.item.cost }}</p>
+            {% bootstrap_form form %}
+            {% buttons %}
+            <button type="submit" class="btn btn-primary">
+                Add to cart
+            </button>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{% url 'show_services' catalog_id %}">
+        </form>
+        </main>
+    </div>
+</body>
+{% endblock %}

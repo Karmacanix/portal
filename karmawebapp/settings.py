@@ -40,6 +40,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'dotenv',
     'bootstrap5',
+    'cart',
     'catalogue',
     'home',
     'django.contrib.admin',

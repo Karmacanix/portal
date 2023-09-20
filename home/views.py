@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+from django.db.models import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -11,6 +12,7 @@ from django.contrib.auth.models import User
 
 
 from .forms import  NewUserForm
+from cart.models import ShoppingCart
 
 
 UserModel = get_user_model()
@@ -32,11 +34,14 @@ def get_complete_name(request):
 # Create your views here.
 def home(request):
     un = ''
+    qs = None
     if request.user.is_authenticated:
         un = get_complete_name(request)
+        if ShoppingCart.objects.filter(buyer=request.user):
+            qs = ShoppingCart.objects.filter(buyer=request.user)
         
     sitename = 'karma-base'
-    return render( request, 'home/home.html', {"sitename": sitename, "un" : un })
+    return render( request, 'home/home.html', {"sitename": sitename, "un" : un, "qs" : qs})
 
 
 
