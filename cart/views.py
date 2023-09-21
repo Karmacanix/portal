@@ -1,5 +1,8 @@
 from typing import Any
-from django import forms 
+from django import forms
+from django.db import models 
+from django.db.models import CharField, DecimalField, Value
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from cart.models import ShoppingCart, ShoppingCartItem
@@ -34,6 +37,23 @@ class AddtoShoppingCartView(UpdateView):
         return form
 
 
-class ShoppingCartCheckoutView(CreateView):
-    pass
+class ShoppingCartCheckoutView(ListView):
+    model= ShoppingCart
+    template_name = "cart/checkout.html"
+    fields = ['buyer', "item", "quantity"]
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        buyer = self.request.user
+        t = 0
+        c = ShoppingCart.active_shoppingcart.filter(buyer = buyer)
+        cart = c.annotate(subtotal=Value('0', output_field=DecimalField(max_digits=14, decimal_places=2)))
+        for i in cart:
+            i.subtotal=i.quantity*i.item.cost
+            t = t+i.subtotal
+            print(i.subtotal, t)
+        
+        context['cart'] = cart
+        context['total'] = t
+        return context
 

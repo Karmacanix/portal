@@ -6,6 +6,9 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 
 from catalogue.models import Catalog, Service
+from home.views import get_complete_name
+from cart.views import ShoppingCart
+
 
 # Create your views here.
 def show_catalog(request):
@@ -42,6 +45,13 @@ class SidebarListView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['un'] = None
+        context['qs'] = None
+        if self.request.user.is_authenticated:
+            context['un'] = get_complete_name(self.request)
+            if ShoppingCart.active_shoppingcart.filter(buyer=self.request.user):
+                context['qs'] = ShoppingCart.active_shoppingcart.filter(buyer=self.request.user)
+
         catalog_w_services = Service.objects.all().values_list('category', flat=True).distinct()
         cs = list(catalog_w_services)
         for item in cs:
@@ -52,8 +62,6 @@ class SidebarListView(ListView):
         
         catalog_with_services = Catalog.objects.filter(id__in=cs)
         context["catalog_items_with_services"] = catalog_with_services
-        #rns = Catalog.objects.root_nodes()
-        #context["top_level_nodes"] = rns
         return context
 
 

@@ -27,26 +27,12 @@
 
 <header class="container p-3 text">
     <div class="row">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="{% url 'home' %}">
-                <h3 class="animation--fade-titles" style='font-family: "Leckerli One", serif; color:#0055aa;'>Bang! Bang!</h3>
-            </a>
-        </div>
-    </div>
-    <br/>
-    <div class="row">
         <div id="karmactive" class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start p-1">
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
-                    <button class="w3-btn w3-deep-purple w3-padding-small w3-round-large w3-hover-pink active">
-                        <a href="{% url 'home' %}" class="nav-link px-2 text-white active" aria-current="page">Home</a>
-                    </button>
-                </li>
-                <li>&nbsp; &nbsp;</li>
-                <li>
-                    <button class="w3-btn w3-purple w3-padding-small w3-round-large w3-hover-green">
-                        <a href="{% url 'show_sidebar' %}" class="nav-link px-2 text-white">Catalog</a>
-                    </button>
+                    <a href="{% url 'show_sidebar' %}">
+                        <h3 class="animation--fade-titles" style='font-family: "Leckerli One", serif; color:#0055aa;'>Bang! Bang!</h3>
+                    </a>
                 </li>
                 <li>&nbsp; &nbsp;</li>
             </ul>
@@ -63,8 +49,14 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu text-small">
-                                <li><a class="dropdown-item" href="#">item 1</a></li>
-                                <li><a class="dropdown-item" href="#">item 2</a></li>
+                                {% for cart_item in qs %}
+                                    <li><a class="dropdown-item" href="#">{{ cart_item }}...{{ cart_item.quantity }}</a></li>
+                                {% endfor %}
+                                <li>
+                                    <button class="w3-btn w3-padding-small w3-round-large w3-hover-purple">
+                                        <a href="{% url 'checkout_cart' %}" class="nav-link px-2 text-white">Checkout</a>
+                                    </button>
+                                </li>
                             </ul>
                         </div>
                     </li>

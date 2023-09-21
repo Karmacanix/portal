@@ -1,12 +1,13 @@
 from django.contrib.auth import views  as auth_views
 from django.urls import path
 
-from . import views
+from home.views import account_settings, signup
+from catalogue.views import SidebarListView
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('account/settings/', views.account_settings, name='account_settings'),
-    path('login/', auth_views.LoginView.as_view(next_page='home', template_name="home/login.html"), name='login'),
+    path('', SidebarListView.as_view(), name='show_sidebar'),
+    path('account/settings/', account_settings, name='account_settings'),
+    path('login/', auth_views.LoginView.as_view(next_page='show_sidebar', template_name="home/login.html"), name='login'),
     path("logout/", auth_views.LogoutView.as_view(template_name="home/logged_out.html"), name="logout"),
     path(
         "password_change/", auth_views.PasswordChangeView.as_view(template_name="home/change-password.html"), name="password_change"
@@ -32,5 +33,5 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(template_name="home/password_reset_complete.html"),
         name="password_reset_complete",
     ),
-    path('signup/', views.signup, name='signup'),
+    path('signup/', signup, name='signup'),
 ]

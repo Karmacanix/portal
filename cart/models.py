@@ -4,6 +4,12 @@ from django.contrib.auth import get_user_model
 from catalogue.models import Service
 
 UserModel = get_user_model()
+# need shoppingcart managers for active and maybe other statuses order or closed
+
+
+class ActiveShoppingCart(models.Manager):
+    def get_active_campaigns(self):
+        return super().get_queryset().filter(active=True)
 
 
 class ShoppingCart(models.Model):
@@ -12,6 +18,8 @@ class ShoppingCart(models.Model):
     quantity = models.PositiveSmallIntegerField(default=1, blank=False)
     added = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+    active_shoppingcart = ActiveShoppingCart()
     
     class Meta:
         unique_together = ["buyer", "item"]

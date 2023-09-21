@@ -1,37 +1,27 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from django.contrib import messages
-from django.db.models import Count
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
-from django.views.generic.edit import FormView
 from django.contrib.auth.models import User
 
 
-from .forms import  NewUserForm
+from home.forms import  NewUserForm
 from cart.models import ShoppingCart
-
 
 UserModel = get_user_model()
 
 def get_complete_name(request):
     if request.user.get_short_name():
         un = request.user.get_short_name()
-        print(un)
         if request.user.get_full_name():
             un = request.user.get_full_name()
-            print(un)
     
     else:
         un = request.user.username
-        print(un)
             
     return un
 
-# Create your views here.
 def home(request):
     un = ''
     qs = None

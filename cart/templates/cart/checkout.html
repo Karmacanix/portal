@@ -1,0 +1,57 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+{% load mptt_tags %}
+{% load djmoney %}
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock %}
+{% block content %}
+</body>
+  <div class="container bg-body-tertiary rounded-3 my-3 p-1" data-bs-theme="dark">  
+    <div class="container my-2">
+    <h2>Checkout - Review Cart</h2>
+    {% if shoppingcart_list %}
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Item</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Costs</th>
+              <th scope="col">Subtotal</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for c in cart %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ c.item }}</td>
+              <td><i class="fa-solid fa-circle-minus"></i> {{ c.quantity}} <i class="fa-solid fa-circle-plus"></i></td>
+              <td>{{ c.item.cost }}</td>
+              <td>{{ c.subtotal }}</td>
+              <td><button class="w3-btn w3-small w3-green">del</button></td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <th scope="row">Total</th>
+              <th scope="row">{{total}}</th>
+              <th></th>
+            </tr>
+          </tbody>
+        </table>
+        <button>Go to shipping details</button>
+    {% endif %}
+      </div>
+</div>
+  <script src="{% static 'js/sidebar.js' %}"></script>
+</body>
+{% endblock %}
