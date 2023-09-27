@@ -53,7 +53,7 @@
   <div class="container bg-body-tertiary rounded-3 my-3 p-1" data-bs-theme="dark">    
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-        <div class="flex-shrink-0 p-3 bg-dark border rounded-3 my-2" style="width: 280px;">
+        <div class="flex-shrink-0 p-3 bg-dark border rounded-3 my-2">
           <h3>
             <a href="{% url 'show_catalog' %}" class="d-flex align-items-center pb-3 mb-3 link-purple text-decoration-none border-bottom text-white">
               <i class="fa-solid fa-bars-staggered"></i>&nbsp;
@@ -65,10 +65,10 @@
           {% endif %}
           {% if user.is_authenticated %}
             {% if all_catalog %}
-              <ul>
+              <ul class="list-unstyled">
               {% recursetree all_catalog %}
                 <li>
-                  <a href="{% url 'update_catalog' node.id %}"> {{ node.name }}</a>
+                  <a href="{% url 'update_catalog' node.id %}" {% if node.id == catalog.id %} class="text-warning"{% endif %}>{{ node.name }}</a>
                   {% if not node.is_leaf_node %}
                     <ul class="children">
                       {{ children }}
@@ -86,39 +86,49 @@
         </div>
       </div>
       <div class="col-md-auto">
-        <div class="flex-shrink-0 p-3 border rounded-3 my-2" style="width: 560px;">
-            <h2 class="h3 mb-3 fw-normal">Update {% if not catalog.parent %}root branch name</h2>{% else %} name or branch</h2>
-            <small>{{ catalog.get_ancestors|tree_path:" > " }}</small><hr>{% endif %}
-            <form method="post" action="">
-              {% csrf_token %}
-              {% bootstrap_form form %}
-              {% buttons %}
-                <button type="submit" class="btn btn-primary w3-hover-pink">
-                  Update
-                </button>
-              {% endbuttons %}
-              <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
-            </form>
+        <div class="flex-shrink-0 p-3 border rounded-3 my-2">
+          <h2 class="h3 mb-3 fw-normal">Update {% if not catalog.parent %}root branch name</h2>{% else %} name</h2>{% endif %}
+          <form method="post" action="">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+              <button type="submit" class="btn btn-primary w3-hover-pink">
+                Update
+              </button>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
+          </form>
+          
+        </div>
+        <div class="flex-shrink-0 p-3 border rounded-3 my-2">
+          <h2 class="h3 mb-3 fw-normal">Update {% if not catalog.parent %} branch</h2>{% else %} branch</h2>{% endif %}
+          <small>{{ catalog.get_ancestors|tree_path:" > " }}</small><hr>
+          <p>{{ catalog.name }}</p>
+          {% if not catalog.parent.parent.parent %}
+            <a href="{% url 'create_branch_catalog' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">New branch</a>
+          {% endif %}
+        </div>
+      </div>
+      {% if catalog.parent %}
+        <div class="col-md-auto">
+          <div class="flex-shrink-0 p-3 border rounded-3 my-2">
             {% if service_list %}
+            <h3>Services offered by {{ catalog.name|lower }}:</h3>
               <hr>
-              <h5>Services offered by {{ catalog.name|lower }}:</h5>
               <p><small>Services includes products and incident reporting</small></p>
               <ul>
                 {% for service in service_list %}
                   <li>{{ service.name }}</li>
                 {% endfor %}
               </ul>
+            {% else %}
+              <h3>No services offered.</h3>
             {% endif %}
             <br/>
-            {% if catalog.parent %}
-              <a href="{% url 'create_service' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">Add services</a>
-            {% endif %}
-            {% if not catalog.parent.parent.parent %}
-              <a href="{% url 'create_branch_catalog' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">New branch</a>
-            {% endif %}
-            <a href="{% url 'show_catalog' %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">Back to Catalog</a>
+            <a href="{% url 'create_service' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">Add services</a>
+          </div>
         </div>
-      </div>
+      {% endif %}
     </div>
   </div>
   <script src="{% static 'js/sidebar.js' %}"></script>
