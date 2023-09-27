@@ -47,3 +47,36 @@ class ShoppingCartItem(models.Model):
 class Checkout(models.Model):
     pass
 
+
+class Address(models.Model):
+    ADD_CHOICES = [
+        ("SHIP","Shipping Address"),
+        ("BILL","Billing Address"),
+    ]
+    type = models.CharField(
+        max_length = 4,
+        choices=ADD_CHOICES,
+        default="SHIP",
+        help_text="Select address type:",
+    )
+    buyer = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    add1 = models.CharField(max_length=50)
+    add2 = models.CharField(max_length=50)
+    city = models.CharField(max_length=20)
+    region = models.CharField(max_length=20)
+    postcode = models.CharField(max_length=6)
+    
+
+class Purchase(models.Model):
+    ADD_CARD = [
+        ("VISA","VISA"),
+        ("MASC","Mastercard"),
+    ]
+    card_type = models.CharField(
+        max_length = 4,
+        choices=ADD_CARD,
+        default="VISA",
+        help_text="Select address type:",
+    )
+    buyer = models.ForeignKey(UserModel, on_delete=models.CASCADE)
+    card_number = models.CharField(max_length=50)

@@ -21,22 +21,46 @@ def show_nav_sidebar(request):
 
 class CatalogCreateView(CreateView):
     model = Catalog
-    fields = '__all__'
-    template_name = "catalogue/catalog_form.html"
+    fields = ('name', 'parent')
+    template_name = "catalogue/catalog_new_form.html"
     success_url = '/catalog/list/'
+    
+    def get_form(self, form_class=None):
+        form = super().get_form( form_class)
+        form.fields['parent'].widget = forms.HiddenInput()
+        return form
+    
+
+class CatalogBranchCreateView(CreateView):
+    model = Catalog
+    fields = ('name', 'parent')
+    template_name = "catalogue/catalog_new_form.html"
+    success_url = '/catalog/list/'
+    
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        p = Catalog.objects.get(id=self.kwargs.get("parent_id"))
+        form.fields['parent'].initial = p
+        return form
     
 
 class CatalogUpdateView(UpdateView):
     model = Catalog
-    success_url = '/catalog/list/'
-    fields = '__all__'
+    fields = ('name', 'parent')
     template_name = "catalogue/catalog_form.html"
+    success_url = '/catalog/list/'
     
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         services = Service.objects.filter(category_id = self.object.id)
         context = super().get_context_data(**kwargs)
         context["service_list"] = services
+        context["all_catalog"] = Catalog.objects.all()
         return context
+    
+    def get_form(self, form_class=None):
+        form = super().get_form( form_class)
+        form.fields['parent'].label = "Branch"
+        return form
 
 
 class SidebarListView(ListView):

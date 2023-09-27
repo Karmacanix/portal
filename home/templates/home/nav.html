@@ -31,7 +31,7 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li>
                     <a href="{% url 'show_sidebar' %}">
-                        <h3 class="animation--fade-titles" style='font-family: "Leckerli One", serif; color:#0055aa;'>Bang! Bang!</h3>
+                        <h3 class="animation--fade-titles" style='font-family: "Leckerli One", serif; color:#0055aa;'>Staff Portal</h3>
                     </a>
                 </li>
                 <li>&nbsp; &nbsp;</li>
@@ -52,11 +52,7 @@
                                 {% for cart_item in qs %}
                                     <li><a class="dropdown-item" href="#">{{ cart_item }}...{{ cart_item.quantity }}</a></li>
                                 {% endfor %}
-                                <li>
-                                    <button class="w3-btn w3-padding-small w3-round-large w3-hover-purple">
-                                        <a href="{% url 'checkout_cart' %}" class="nav-link px-2 text-white">Checkout</a>
-                                    </button>
-                                </li>
+                                <li><a class="dropdown-item" href="{% url 'checkout_cart' %}"><button class=" w3-btn w3-blue w3-padding-small w3-round-large w3-hover-purple">Checkout</button></a></li>
                             </ul>
                         </div>
                     </li>

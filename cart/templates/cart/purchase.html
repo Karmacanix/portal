@@ -1,0 +1,35 @@
+{% extends "home/base.html" %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+
+  {% if next %}
+      {% if user.is_authenticated %}
+          <p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+      {% else %}
+          <p>Please login to see this page.</p>
+      {% endif %}
+  {% endif %}
+
+  <div class="container my-5">
+    <main class="form-signin w-100 m-auto border bg-body-tertiary rounded-3">
+      <form method="post" action="{% url 'show_sidebar' %}">
+        {% csrf_token %}
+        <h2 class="h3 mb-3 fw-normal">Add purchase details</h2>
+        {% if messages %}
+          {% bootstrap_messages %}
+        {% endif %}
+        {% bootstrap_form form %}
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">
+            Next
+          </button>
+        {% endbuttons %}
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+    </main>
+  </div>
+
+{% endblock %}

@@ -24,7 +24,7 @@
               <th scope="col">Quantity</th>
               <th scope="col">Costs</th>
               <th scope="col">Subtotal</th>
-              <th scope="col"></th>
+              <th scope="col"><i class="fa-solid fa-circle-minus"></i></th>
             </tr>
           </thead>
           <tbody>
@@ -48,7 +48,7 @@
             </tr>
           </tbody>
         </table>
-        <button>Go to shipping details</button>
+        <button><a href="{% url 'shipping_address' %}">Next</button>
     {% endif %}
       </div>
 </div>

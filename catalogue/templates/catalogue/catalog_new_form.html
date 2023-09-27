@@ -1,0 +1,31 @@
+{% extends "home/base.html" %}
+{% load static %}
+{# Load the tag library #}
+{% load bootstrap5 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% block content %}
+
+
+<body>
+  <div class="container my-2">
+    {% bootstrap_messages %}
+    <main class="form-signin w-100 m-auto border rounded-2">
+      <h2 class="h3 mb-3 fw-normal">New branch</h2>
+      <form method="post" action="">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+          <button type="submit" class="btn btn-primary">
+            Create branch
+          </button>
+        {% endbuttons %}
+        <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
+      </form>
+      <a href="{% url 'show_catalog' %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">Back to Catalog</a>
+    </main>
+  </div>
+</body>
+{% endblock %}
