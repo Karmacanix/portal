@@ -90,7 +90,7 @@
           <h2 class="h3 mb-3 fw-normal">Update {% if not catalog.parent %}root branch name</h2>{% else %} name</h2>{% endif %}
           <form method="post" action="">
             {% csrf_token %}
-            {% bootstrap_form form %}
+            {% bootstrap_field form.name %}
             {% buttons %}
               <button type="submit" class="btn btn-primary w3-hover-pink">
                 Update
@@ -102,10 +102,19 @@
         </div>
         <div class="flex-shrink-0 p-3 border rounded-3 my-2">
           <h2 class="h3 mb-3 fw-normal">Update {% if not catalog.parent %} branch</h2>{% else %} branch</h2>{% endif %}
-          <small>{{ catalog.get_ancestors|tree_path:" > " }}</small><hr>
-          <p>{{ catalog.name }}</p>
+          <small>{{ catalog.get_ancestors|tree_path:" > " }}</small>
+          <form method="post" action="">
+            {% csrf_token %}
+            {% bootstrap_field form.parent %}
+            {% buttons %}
+              <button type="submit" class="btn btn-primary w3-hover-pink">
+                Update
+              </button>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
+          </form>
           {% if not catalog.parent.parent.parent %}
-            <a href="{% url 'create_branch_catalog' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">New branch</a>
+            <hr><a href="{% url 'create_branch_catalog' catalog.id %}" class="w3-btn w3-deep-purple w3-round-large w3-hover-pink">New branch to {{ catalog.name }}</a>
           {% endif %}
         </div>
       </div>
@@ -113,14 +122,23 @@
         <div class="col-md-auto">
           <div class="flex-shrink-0 p-3 border rounded-3 my-2">
             {% if service_list %}
-            <h3>Services offered by {{ catalog.name|lower }}:</h3>
-              <hr>
-              <p><small>Services includes products and incident reporting</small></p>
-              <ul>
+            <h2>Services offered by {{ catalog.name|lower }}</h2>
+            <table class="table table-dark table-hover">
+              <thead>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Approval</th>
+              </thead>
+              <tbody>
                 {% for service in service_list %}
-                  <li>{{ service.name }}</li>
+                  <tr>
+                    <td><a href="#">{{ service.name }}</a></td>
+                    <td>{{ service.get_service_type_display }}</td>
+                    <td>{{ service.get_approval_type_display }}</td> 
+                  </tr>
                 {% endfor %}
-              </ul>
+              </tbody>
+            </table>
             {% else %}
               <h3>No services offered.</h3>
             {% endif %}
