@@ -36,10 +36,8 @@ class Service(models.Model):
     # notes
     APPROVAL_TYPE_CHOICES = [
         ("MAN","Manager"),
-        ("PRJ","Project/Programme Manager"),
         ("NON","No approval required"),
-        ("SER","Service Owner"),
-        ("SYS","System Owner"),
+        ("BUS","Business Owner"),
         ("CST","Cost Centre Owner"),
     ]
     approval_type = models.CharField(

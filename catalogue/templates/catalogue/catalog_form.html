@@ -132,7 +132,7 @@
               <tbody>
                 {% for service in service_list %}
                   <tr>
-                    <td><a href="#">{{ service.name }}</a></td>
+                    <td><a href="{% url 'update_service' service.id %}">{{ service.name }}</a></td>
                     <td>{{ service.get_service_type_display }}</td>
                     <td>{{ service.get_approval_type_display }}</td> 
                   </tr>

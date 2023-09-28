@@ -2,29 +2,106 @@
 {% load static %}
 {# Load the tag library #}
 {% load bootstrap5 %}
-
+{% load mptt_tags %}
 {# Load CSS and JavaScript #}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
+{% block head %}
+  <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+{% endblock %}
 {% block content %}
-
+<style>
+  * {
+    box-sizing: border-box;
+  }
+  
+  /* Float four columns side by side */
+  .column {
+    float: left;
+    width: 25%;
+    padding: 0 10px;
+  }
+  
+  /* Remove extra left and right margins, due to padding in columns */
+  .row {margin: 0 -5px;}
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  /* Style the counter cards */
+  .card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    padding: 16px;
+    text-align: center;
+  }
+  
+  /* Responsive columns - one column layout (vertical) on small screens */
+  @media screen and (max-width: 600px) {
+    .column {
+      width: 100%;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+</style>
 
 <body>
-  <div class="container my-2">
-    {% bootstrap_messages %}
-    <main class="form-signin w-100 m-auto border rounded-2">
-      <form method="post" action="">
-        {% csrf_token %}
-        <h2 class="h3 mb-3 fw-normal">Catalogue</h2>
-        {% bootstrap_form form %}
-        {% buttons %}
-          <button type="submit" class="btn btn-primary">
-            Submit
-          </button>
-        {% endbuttons %}
-        <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
-      </form>
-    </main>
+  <div class="container bg-body-tertiary rounded-3 my-3 p-1" data-bs-theme="dark">    
+    <div class="row justify-content-md-left">
+      <div class="col-md-auto">
+        <div class="flex-shrink-0 p-3 bg-dark border rounded-3 my-2">
+          <h3>
+            <a href="{% url 'show_catalog' %}" class="d-flex align-items-center pb-3 mb-3 link-purple text-decoration-none border-bottom text-white">
+              <i class="fa-solid fa-bars-staggered"></i>&nbsp;
+              <span class="fs-5 fw-semibold">Maintain Service Catalog</span>
+            </a>
+          </h3>
+          {% if messages %}
+            {% bootstrap_messages %}
+          {% endif %}
+          {% if user.is_authenticated %}
+            {% if all_catalog %}
+              <ul class="list-unstyled">
+              {% recursetree all_catalog %}
+                <li>
+                  <a href="{% url 'update_catalog' node.id %}" {% if node.id == catalog.id %} class="text-warning"{% endif %}>{{ node.name }}</a>
+                  {% if not node.is_leaf_node %}
+                    <ul class="children">
+                      {{ children }}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endrecursetree %}
+              </ul>
+            {% else %}
+              <p class="text-danger">No data found.</p>
+            {% endif %}
+          {% else %}
+            <p class="text-danger">You are not permitted access to this information.</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-auto">
+        <div class="flex-shrink-0 p-3 border rounded-3 my-2">
+          <h2 class="h3 mb-3 fw-normal">Update service details</h2>
+          <form method="post" action="">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            {% buttons %}
+              <button type="submit" class="btn btn-primary w3-hover-pink">
+                Update
+              </button>
+            {% endbuttons %}
+            <input type="hidden" name="next" value="{{ catalog.get_absolute_url }}">
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
+  <script src="{% static 'js/sidebar.js' %}"></script>
 </body>
 {% endblock %}

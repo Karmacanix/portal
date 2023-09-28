@@ -1,5 +1,6 @@
 from typing import Any
-from django import forms 
+from django import forms
+from django.db import models 
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView
@@ -24,11 +25,16 @@ class CatalogCreateView(CreateView):
     fields = ('name', 'parent')
     template_name = "catalogue/catalog_new_form.html"
     success_url = '/catalog/list/'
-    
+        
     def get_form(self, form_class=None):
-        form = super().get_form( form_class)
+        form = super().get_form(form_class)
         form.fields['parent'].widget = forms.HiddenInput()
         return form
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["all_catalog"] = Catalog.objects.all()
+        return context
     
 
 class CatalogBranchCreateView(CreateView):
@@ -130,3 +136,21 @@ class ServiceListView(ListView):
         context["services_for_catalog_item"] = cat_obj
         context["catalog_list"] = cat_tree
         return context   
+
+
+class ServiceUpdateView(UpdateView):
+    model = Service
+    fields = ('name', 'category', 'cost', 'service_type', 'approval_type')
+    template_name = "catalogue/service_form.html"
+    success_url = '/catalog/list/'
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+         context = super().get_context_data(**kwargs)
+    #     context["service_list"] = services
+         context["all_catalog"] = Catalog.objects.all()
+         return context
+    
+    # def get_form(self, form_class=None):
+    #     form = super().get_form( form_class)
+    #     form.fields['parent'].label = "Branch"
+    #     return form
